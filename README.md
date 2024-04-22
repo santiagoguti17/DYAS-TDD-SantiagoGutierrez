@@ -17,7 +17,7 @@ Busque en internet el repositorio central de maven.
 
 Busque el artefacto JUnit y entre a la versión más nueva.
 
-![](img/265023383-5d18fa63-a6e4-40f9-af24-2589e8a3372e.png)
+![](img/repo.png)
 
 **NOTA** Ingresar  directamente a ["2. Junit"](https://mvnrepository.com/artifact/junit/junit).  
 
