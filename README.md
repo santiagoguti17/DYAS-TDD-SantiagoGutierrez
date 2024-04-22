@@ -1,6 +1,6 @@
 # TALLER 5 - TDD
 
-#### CLASES DE EQUIVALENCIA
+#### CLASES DE EQUIVALENCIA 
 
 ### CREAR UN PROYECTO CON MAVEN
 En el directorio de trabajo ejecutar el comando necesario para crear/generar un proyecto maven basado en un arquetipo:
