@@ -177,18 +177,17 @@ También puede utilizar:
 $ mvn test
 ```
 
+---
+
+Revise cuál es la diferencia.  
+Tip: [Maven Lifecycle Phases](https://www.devopsschool.com/blog/maven-tutorials-maven-lifecycle-phases-goal).
 
 ---
 
 ### 2️⃣ Nota sobre ubicación del `pom.xml`
 
-```markdown
 ⚠️ **Nota importante:**  
 Recuerde ejecutar todos los comandos Maven desde la carpeta **raíz del proyecto**, donde se encuentra el archivo `pom.xml`.
-
-
-Revise cuál es la diferencia.  
-Tip: [Maven Lifecycle Phases](https://www.devopsschool.com/blog/maven-tutorials-maven-lifecycle-phases-goal).
 
 ---
 
