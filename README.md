@@ -8,10 +8,12 @@
 En el directorio de trabajo ejecutar el comando necesario para crear/generar un proyecto maven basado en un arquetipo:
 ```yml
 Grupo (groupId): edu.unisabana.dyas
-Artefacto (artifactId): ClasesEquivalencia
+Artefacto (artifactId): clasesequivalencia
 Paquete (package): edu.unisabana.dyas.tdd
 archetypeArtifactId: maven-archetype-quickstart
 ```
+
+🎓 Si necesitas más ayuda con la creación de proyectos en Maven, revisa el [**Taller de Nivelación**](https://github.com/CesarAVegaF312/DYAS-Taller_nivelacion.git).
 
 ---
 
@@ -175,13 +177,23 @@ También puede utilizar:
 $ mvn test
 ```
 
+
+---
+
+### 2️⃣ Nota sobre ubicación del `pom.xml`
+
+```markdown
+⚠️ **Nota importante:**  
+Recuerde ejecutar todos los comandos Maven desde la carpeta **raíz del proyecto**, donde se encuentra el archivo `pom.xml`.
+
+
 Revise cuál es la diferencia.  
 Tip: [Maven Lifecycle Phases](https://www.devopsschool.com/blog/maven-tutorials-maven-lifecycle-phases-goal).
 
 ---
 
 ### FINALIZAR EL EJERCICIO
-Piense en los casos de [equivalencia](https://prezi.com/-jp_rqhov1nn/particiones-o-clases-de-equivalencia/) que se pueden generar del ejercicio para la registraduría dadas las condiciones. Deben ser al menos 5.
+Piense en los casos de [equivalencia](https://prezi.com/view/LyUYlz5nx2UmnKVMgSve/?referral_token=inUc7klnB3FN) que se pueden generar del ejercicio para la registraduría dadas las condiciones. Deben ser al menos 5.
 
 Complete la implementación de la clase `RegistryTest.java` con (al menos) un método por cada clase de equivalencia, creando diferentes personas y validando que el resultado sea el esperado.
 
@@ -216,7 +228,10 @@ Define una **matriz de clases de equivalencia y valores límite** para `register
 ---
 
 ### 2. Cobertura de código
-Agrega **JaCoCo** para medir cobertura:
+
+Agrega **JaCoCo** para medir cobertura.  
+Este plugin debe incluirse dentro de la sección `<build><plugins> ... </plugins></build>` del archivo `pom.xml`.
+
 ```xml
 <plugin>
   <groupId>org.jacoco</groupId>
@@ -224,16 +239,13 @@ Agrega **JaCoCo** para medir cobertura:
   <version>0.8.11</version>
   <executions>
     <execution>
-      <goals>
-        <goal>prepare-agent</goal>
-      </goals>
+      <id>prepare-agent</id>
+      <goals><goal>prepare-agent</goal></goals>
     </execution>
     <execution>
       <id>report</id>
       <phase>verify</phase>
-      <goals>
-        <goal>report</goal>
-      </goals>
+      <goals><goal>report</goal></goals>
     </execution>
   </executions>
 </plugin>
