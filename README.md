@@ -66,32 +66,34 @@ Edite el archivo `pom.xml` y realice las siguientes actualizaciones:
 ### Dependencias mínimas (`pom.xml`)
 
 ```xml
-<properties>
-  <maven.compiler.target>1.8</maven.compiler.target>
-  <maven.compiler.source>1.8</maven.compiler.source>
-</properties>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
 
-<dependencies>
-  <!-- JUnit 5 -->
-  <dependency>
-    <groupId>org.junit.jupiter</groupId>
-    <artifactId>junit-jupiter</artifactId>
-    <version>5.10.2</version>
-    <scope>test</scope>
-  </dependency>
+  <dependencies>
+    <!-- JUnit 4 -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
-</dependencies>
-
-<build>
-  <plugins>
-    <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-surefire-plugin</artifactId>
-      <version>3.2.5</version>
-      <configuration><useModulePath>false</useModulePath></configuration>
-    </plugin>
-  </plugins>
-</build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+        <configuration>
+          <useModulePath>false</useModulePath>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 ```
 
 ---
@@ -99,7 +101,7 @@ Edite el archivo `pom.xml` y realice las siguientes actualizaciones:
 ### COMPILAR Y EJECUTAR
 Ejecute los comandos de Maven, 
 ```bash
-mvn clean compile
+mvn clean package
 ```
 para compilar el proyecto y verificar que el proyecto se creó correctamente y los cambios realizados al archivo pom no generan inconvenientes.
 
@@ -134,11 +136,12 @@ Se usará la clase *Person* que se describe más adelante. El servicio de la reg
 ```
 src/
  ├─ main/java/edu/unisabana/tyvs/
- │   ├─ domain/                 # Reglas de negocio puras
- │       ├─ model/              # Entidades / VOs (Person, Gender, RegisterResult)
- │       ├─ service/            # Casos de uso (Registry)
+ │   ├─ domain/
+ │   │   ├─ model/              # Person, Gender, RegisterResult
+ │   │   └─ service/            # Registry
  └─ test/java/edu/unisabana/tyvs/
-     └─ unit/                   # Pruebas unitarias puras del dominio (Mockito para ports)
+     ├─ domain/
+     │   └─ service/            # RegistryTest
 ```
 
 > También puedes llevar esto a **multi-módulo Maven** más estricto más adelante. Para TDD, esta versión por paquetes es suficiente y simple.
@@ -261,13 +264,12 @@ Empecemos ...
 
 ### 1. RED: primera prueba (camino feliz)
 
-Bajo la carpeta de pruebas, cree la clase `RegistryTest.java` en el directorio `edu.unisabana.tyvs.unit`:
+Bajo la carpeta de pruebas, cree la clase `RegistryTest.java` en el directorio `edu.unisabana.tyvs.domain.service`:
 
 ```java
-package edu.unisabana.tyvs.unit;
+package edu.unisabana.tyvs.domain.service;
 
 import edu.unisabana.tyvs.domain.model.*;
-import edu.unisabana.tyvs.domain.service.Registry;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -287,6 +289,7 @@ public class RegistryTest {
     }
 }
 
+
 ```
 
 ### 2. GREEN: implementación mínima
@@ -302,12 +305,12 @@ Recuerde ejecutar todos los comandos Maven desde la carpeta **raíz del proyecto
 
 Para correr las pruebas utilice:
 ```sh
-$ mvn package
+mvn clean compile
 ```
 
 También puede utilizar:
 ```sh
-$ mvn test
+mvn clean test
 ```
 
 ---
@@ -353,7 +356,10 @@ if (!p.isAlive()) return RegisterResult.DEAD;
 Refactorizando el código.
 
 ```java
-package edu.unisabana.tyvs.tdd.registry;
+package edu.unisabana.tyvs.domain.service;
+
+import edu.unisabana.tyvs.domain.model.Person;
+import edu.unisabana.tyvs.domain.model.RegisterResult;
 
 public class Registry {
 
@@ -367,6 +373,15 @@ public class Registry {
         // implementación mínima para pasar las pruebas actuales
         return RegisterResult.VALID;
     }
+}
+```
+y
+
+```java
+package edu.unisabana.tyvs.domain.model;
+
+public enum RegisterResult {
+    VALID, DUPLICATED, INVALID, DEAD
 }
 ```
 
@@ -410,22 +425,30 @@ Este plugin debe incluirse dentro de la sección `<build><plugins> ... </plugins
 
 ```xml
     <!-- (Opcional pero recomendado) JaCoCo para cobertura -->
-    <plugin>
-      <groupId>org.jacoco</groupId>
-      <artifactId>jacoco-maven-plugin</artifactId>
-      <version>0.8.12</version>
-      <executions>
-        <execution>
-          <id>prepare-agent</id>
-          <goals><goal>prepare-agent</goal></goals>
-        </execution>
-        <execution>
-          <id>report</id>
-          <phase>verify</phase>
-          <goals><goal>report</goal></goals>
-        </execution>
-      </executions>
-    </plugin>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>0.8.12</version>
+          <executions>
+            <execution>
+              <id>prepare-agent</id>
+              <goals>
+                <goal>prepare-agent</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>report</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>report</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </build>
 ```
 
 Ejecuta:
