@@ -80,13 +80,6 @@ Edite el archivo `pom.xml` y realice las siguientes actualizaciones:
     <scope>test</scope>
   </dependency>
 
-  <!-- Mockito para “dobles” de los puertos (ports) -->
-  <dependency>
-    <groupId>org.mockito</groupId>
-    <artifactId>mockito-core</artifactId>
-    <version>5.12.0</version>
-    <scope>test</scope>
-  </dependency>
 </dependencies>
 
 <build>
