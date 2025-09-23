@@ -38,7 +38,8 @@ Busque el artefacto JUnit y entre a la versión más nueva.
 
 ![](img/repo.png)
 
-**NOTA** Ingresar directamente a ["2. Junit"](https://mvnrepository.com/artifact/junit/junit).  
+#### ⚠️ Nota importante 
+Ingresar directamente a ["2. Junit"](https://mvnrepository.com/artifact/junit/junit).  
 
 Ingrese a la pestaña de Maven y haga click en el texto de la dependencia para copiarlo al portapapeles.
 
@@ -203,17 +204,14 @@ public class Registry {
 El ciclo TDD: Red → Green → Refactor es la práctica central de Desarrollo Guiado por Pruebas (Test-Driven Development) y consiste en tres pasos cortos y repetitivos:
 
 ### 1. RED (Rojo)
-
 - Escribes una prueba unitaria nueva que describe el comportamiento que deseas.
 - Como aún no has implementado el código (o la lógica está incompleta), la prueba falla.
 
 ### 2. GREEN (Verde)
-
 - Escribes la implementación mínima para que la prueba pase.
 - No importa si el código no es elegante todavía, lo importante es que sea funcional.
 
 ### 3. REFACTOR (Refactorizar)
-
 - Una vez todas las pruebas están en verde, mejoras el código:
   - Limpias duplicación.
   - Renombras variables o métodos.
@@ -223,7 +221,7 @@ El ciclo TDD: Red → Green → Refactor es la práctica central de Desarrollo G
 
 Todos los archivos relacionados específicamente con los temas de pruebas deben ir bajo la carpeta `test`.
 
-Adicional a esta practica de creacion de pruebas vamos a seguir el diseño de pruebas patrón **AAA (Arrange – Act – Assert)**:
+Adicional a esta practica de creacion de pruebas vamos a seguir el diseño de pruebas patrón **AAA (Arrange – Act – Assert)**
 
 ## Patrón AAA (Arrange – Act – Assert)
 
@@ -238,7 +236,7 @@ En el diseño de pruebas unitarias se recomienda estructurar cada método de pru
 ### Assert (Afirmar)
 - Se verifican los resultados obtenidos frente a lo esperado.
 
-## ⚠️ Nota importante
+#### ⚠️ Nota importante
 
 ✅ Este patrón mejora la legibilidad y mantenibilidad de las pruebas porque:
 
@@ -289,7 +287,7 @@ Ya devuelve `VALID`, la prueba pasa.
 
 ---
 
-## ⚠️ Nota importante sobre ubicación del `pom.xml`
+#### ⚠️ Nota importante sobre ubicación del `pom.xml`
 
 Recuerde ejecutar todos los comandos Maven desde la carpeta **raíz del proyecto**, donde se encuentra el archivo `pom.xml`.
 
@@ -510,4 +508,5 @@ Crea un archivo `defectos.md` para documentar fallos:
 
 ---
 
-## ⚠️ Nota importante: Con estas prácticas, tus pruebas unitarias no solo validan la funcionalidad, sino que se convierten en un **instrumento de calidad**, cumpliendo con los indicadores de desempeño del curso.
+#### ⚠️ Nota importante:
+Con estas prácticas, tus pruebas unitarias no solo validan la funcionalidad, sino que se convierten en un **instrumento de calidad**.
