@@ -21,6 +21,7 @@ Este taller adapta el enfoque clásico de **TDD** (Red → Green → Refactor) a
 - [Clases de equivalencia](#clases-de-equivalencia)
 - [Guía avanzada de Pruebas Unitarias](#guía-avanzada-de-pruebas-unitarias)
 - [Para entregar](#para-entregar)
+- [Resumen del Taller de TDD](#resumen-del-Taller-de-TDD)
 - [Recursos recomendados](#recursos-recomendados)
 
 ---
@@ -568,12 +569,55 @@ Crea un archivo `defectos.md` para documentar fallos:
 
 ---
 
+# Resumen del Taller de TDD
+
+En este taller aplicamos distintas estrategias de **pruebas unitarias** que permiten desarrollar software más confiable, claro y alineado con las reglas de negocio.  
+
+---
+
+## 🔴🟢🔵 TDD (Test-Driven Development)
+
+- **Qué es:** ciclo de desarrollo *Red → Green → Refactor* en el que primero se escribe una prueba que falla, luego se implementa el código mínimo para que pase y finalmente se refactoriza.  
+- **Para qué sirve:** garantiza que el código se construya guiado por pruebas desde el inicio, evitando errores tempranos y facilitando el diseño incremental.  
+
+---
+
+## 🧩 Patrón AAA (Arrange – Act – Assert)
+
+- **Qué es:** forma de estructurar cada prueba en tres pasos:  
+  1. **Arrange:** preparar los datos y objetos necesarios.  
+  2. **Act:** ejecutar el método o acción bajo prueba.  
+  3. **Assert:** verificar que el resultado sea el esperado.  
+- **Para qué sirve:** hace que las pruebas sean más legibles, claras y fáciles de mantener, al separar explícitamente la preparación, la acción y la verificación.  
+
+---
+
+## 🧮 Clases de Equivalencia y Valores Límite
+
+- **Qué es:** técnica de diseño de pruebas que agrupa las entradas posibles en clases que se comportan de la misma forma, y selecciona valores representativos (incluyendo bordes).  
+- **Para qué sirve:** reduce la cantidad de pruebas necesarias sin perder cobertura lógica, asegurando que se validen casos normales, inválidos y extremos donde suelen ocurrir errores.  
+
+---
+
+## 🤝 BDD (Behavior Driven Development)
+
+- **Qué es:** forma de expresar pruebas en un lenguaje cercano al negocio usando narrativa **Given – When – Then (Dado – Cuando – Entonces)**.  
+- **Para qué sirve:** conecta las reglas de negocio con la validación automatizada, facilitando la comunicación entre desarrolladores, analistas y usuarios, y asegurando que las pruebas reflejen el comportamiento esperado del sistema.  
+
+---
+
+## ✅ Conclusión
+
+En conjunto, estas prácticas permiten:  
+- Desarrollar código guiado por reglas de negocio (**TDD + BDD**).  
+- Escribir pruebas claras y mantenibles (**AAA**).  
+- Diseñar casos de prueba robustos que cubren diferentes escenarios (**clases de equivalencia y valores límite**).  
+
+Esto fortalece la **calidad del software**, mejora la **trazabilidad de los requisitos** y fomenta un desarrollo **iterativo y seguro**.
+
+---
+
 # Recursos recomendados
 - *The Art of Software Testing* – Myers, 2011.  
 - *Testing Computer Software* – Kaner, 1999.  
 - *Effective Unit Testing* – Lasse Koskela, 2013.  
-
----
-
-#### ⚠️ Nota importante:
-Con estas prácticas, tus pruebas unitarias no solo validan la funcionalidad, sino que se convierten en un **instrumento de calidad**.
