@@ -487,10 +487,12 @@ Ejemplo:
 
 ```gherkin
 Escenario: Rechazar persona menor de edad
-  Dado que existe una persona viva de 17 años
-  Cuando intento registrarla
-  Entonces el resultado debe ser UNDERAGE
+  Dado (Given) que existe una persona viva de 17 años
+  Cuando (When) intento registrarla
+  Entonces (Then) el resultado debe ser UNDERAGE
 ```
+
+---
 
 ## 4. Clases de equivalencia y escenarios BDD
 
