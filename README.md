@@ -391,11 +391,27 @@ Ejecutar y validar nuevamente el resultado.
 
 ## CLASES DE EQUIVALENCIA
 
-Piense en los casos de [equivalencia](https://prezi.com/view/LyUYlz5nx2UmnKVMgSve/?referral_token=inUc7klnB3FN) que se pueden generar del ejercicio para la registraduría dadas las condiciones.
+Antes de escribir pruebas conviene particionar el dominio de entrada en clases de [equivalencia](https://prezi.com/view/LyUYlz5nx2UmnKVMgSve/?referral_token=inUc7klnB3FN): grupos de valores que el sistema trata de la misma forma. Probar un representante por clase suele ser suficiente, y se refuerza con valores límite (los bordes entre clases), donde suelen aparecer errores. Piense en los casos de equivalencia que se pueden generar del ejercicio para la registraduría dadas las condiciones.
 
-Complete la implementación de la clase `RegistryTest.java` con (al menos) un método por cada clase de equivalencia, creando diferentes personas y validando que el resultado sea el esperado.
+Para `registerVoter(Person)` el espacio de entradas se define por los atributos del dominio (Definición de datos):
 
-Complete la implementación del método `registerVoter` en la clase `Registry.java` para retornar el resultado esperado según la entrada.
+- Edad
+  - Clase inválida: `edad < 0` → `INVALID_AGE` (límite: `-1`, borde inferior).
+  - Clase “menor”: `0 ≤ edad < 18` → `UNDERAGE` (límites: `17` y `18`).
+  - Clase válida: `18 ≤ edad ≤ 120` → contribuye a `VALID` si demás reglas pasan (límites: `18`, `120`).
+  - Clase inválida: `edad > 120` → `INVALID_AGE` (límite: `121`).
+
+- Estado de vida 
+  - `alive = false` → `DEAD` (independiente de la edad).
+  - `alive = true` → continúa evaluación de edad/duplicados.
+
+- Identificador (unicidad)
+  - Clase inválida de formato (opcional según tu enum): `id ≤ 0` → `INVALID`/`INVALID_ID`.
+  - Clase “duplicado”: mismo `id` ya registrado → `DUPLICATED`.
+  - Clase “único”: `id` no registrado → continúa evaluación.
+
+- Nulidad
+  - `person == null` → `INVALID` (validación defensiva).
 
 ---
 
@@ -406,7 +422,9 @@ Las pruebas unitarias son la base de un plan de pruebas exhaustivo. Para alinear
 ---
 
 ## 1. Planificación de las pruebas
-Define una **matriz de clases de equivalencia y valores límite** para `registerVoter`. Ejemplo:
+Define una **matriz de clases de equivalencia y valores límite** para `registerVoter`. 
+
+Ejemplo:
 
 | Caso | Entrada | Resultado esperado |
 |------|---------|---------------------|
@@ -463,12 +481,29 @@ Revisa el archivo `target/site/jacoco/index.html`.
 ---
 
 ## 3. Robustez de las pruebas
-Incluye casos adicionales:
-- Persona nula (`null`) `shouldReturnInvalidWhenPersonIsNull()`
-- `id <= 0`.
-- Valores de borde (`17`, `18`, `120`, `121`).
-- `shouldReturnInvalidWhenUnderAge()` (edad < 18)  
-- `shouldReturnValidWhenNewAdultAlive()`
+La escritura de pruebas con **BDD (Behavior-Driven Development)** busca que los casos de prueba se expresen en un lenguaje cercano al negocio, entendible tanto para desarrolladores como para usuarios y analistas. A diferencia de las pruebas unitarias tradicionales, que se centran en métodos o clases, en BDD se describe el **comportamiento esperado del sistema** usando una narrativa estructurada en términos de Given–When–Then (Dado–Cuando–Entonces). Esto facilita la comunicación entre los diferentes actores de un proyecto, asegura que las pruebas estén alineadas con los requisitos funcionales y promueve que el código se construya a partir de la especificación del comportamiento deseado. En el marco de esta asignatura, BDD aporta claridad al proceso de validación, ya que conecta directamente las reglas de negocio con la verificación automatizada, fortaleciendo la robustez y la trazabilidad de las pruebas.
+
+Ejemplo:
+
+```gherkin
+Escenario: Rechazar persona menor de edad
+  Dado que existe una persona viva de 17 años
+  Cuando intento registrarla
+  Entonces el resultado debe ser UNDERAGE
+```
+
+## 4. Clases de equivalencia y escenarios BDD
+
+La siguiente tabla combina los nombres de los tests unitarios (estilo técnico en JUnit) con su respectiva especificación en **BDD (Given–When–Then)**, de manera que se mantenga trazabilidad entre las reglas de negocio y las pruebas.
+
+| Nombre del test (JUnit) | Escenario BDD (Given–When–Then) |
+|--------------------------|----------------------------------|
+| **shouldReturnInvalidWhenPersonIsNull** | **Given** la persona es `null` <br> **When** intento registrarla <br> **Then** el resultado debe ser `INVALID` |
+| **shouldRejectWhenIdIsZeroOrNegative** | **Given** la persona tiene `id = 0` (o `id = -5`), edad 25 y está viva <br> **When** intento registrarla <br> **Then** el resultado debe ser `INVALID` |
+| **shouldRejectUnderageAt17** | **Given** la persona tiene 17 años, está viva y su id es válido <br> **When** intento registrarla <br> **Then** el resultado debe ser `UNDERAGE` |
+| **shouldAcceptAdultAt18** | **Given** la persona tiene 18 años, está viva y su id es válido <br> **When** intento registrarla <br> **Then** el resultado debe ser `VALID` |
+| **shouldAcceptMaxAge120** | **Given** la persona tiene 120 años, está viva y su id es válido <br> **When** intento registrarla <br> **Then** el resultado debe ser `VALID` |
+| **shouldRejectInvalidAgeOver120** | **Given** la persona tiene 121 años, está viva y su id es válido <br> **When** intento registrarla <br> **Then** el resultado debe ser `INVALID_AGE` |
 
 > **Regla**: todas las pruebas unitarias se enfocan en **dominio**.
 
@@ -504,7 +539,7 @@ Crea un archivo `defectos.md` para documentar fallos:
   - Descripción breve del dominio y reglas validadas.
   - Breve explicación de **TDD (Red → Green → Refactor)** y **AAA** aplicada en el proyecto.
 - Pruebas unitarias:
-  - ≥ 5 clases de equivalencia + valores límite (17/18, 120/121…).
+  - ≥ 5 Clases de equivalencia y escenarios BDD.
   - Todas las pruebas escritas con **AAA (Arrange–Act–Assert)**.
 - Nomenclatura clara de métodos (`should…`), y un solo assert principal por test (o varios con misma intención).
 - Cobertura:
