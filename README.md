@@ -11,6 +11,21 @@ Este taller adapta el enfoque clásico de **TDD** (Red → Green → Refactor) a
 
 ---
 
+## 📑 Índice
+
+- [🎯 Objetivos del taller](#-objetivos-del-taller)
+- [PRUEBAS UNITARIAS BÁSICAS](#pruebas-unitarias-básicas)
+- [EJERCICIO “REGISTRADURÍA”](#ejercicio-registraduría)
+- [TDD Paso a Paso (Red → Green → Refactor)](#tdd-paso-a-paso-red--green--refactor)
+- [Patrón AAA (Arrange – Act – Assert)](#patrón-aaa-arrange--act--assert)
+- [EJECUTAR LAS PRUEBAS](#ejecutar-las-pruebas)
+- [CLASES DE EQUIVALENCIA](#clases-de-equivalencia)
+- [Guía avanzada de Pruebas Unitarias](#guía-avanzada-de-pruebas-unitarias)
+- [PARA ENTREGAR](#para-entregar)
+- [Recursos recomendados](#recursos-recomendados)
+
+---
+
 ## PRUEBAS UNITARIAS BÁSICAS
 
 ---
