@@ -26,7 +26,7 @@ Paquete (package): edu.unisabana.tyvs.tdd
 archetypeArtifactId: maven-archetype-quickstart
 ```
 
-🎓 Si necesitas más ayuda con la creación de proyectos en Maven, revisa el [**Taller de Nivelación**](https://github.com/CesarAVegaF312/tyvs-Taller_nivelacion.git).
+🎓 Si necesitas más ayuda con la creación de proyectos en Maven, revisa el [**Taller de Nivelación**](https://github.com/CesarAVegaF312/DYAS-Taller_nivelacion).
 
 ---
 
