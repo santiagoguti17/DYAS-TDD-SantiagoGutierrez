@@ -1,13 +1,17 @@
-# Taller de TDD (Pruebas Unitarias)
+# Taller de TDD - Pruebas Unitarias
 
 Este taller adapta el enfoque clásico de **TDD** (Red → Green → Refactor) a una **Arquitectura Limpia (Clean Architecture)**. El objetivo es que las **pruebas unitarias** garanticen la calidad del **dominio** sin acoplarse a frameworks o infraestructura.
 
 ---
 
 ## 🎯 Objetivos del taller
-- Diseñar pruebas unitarias que ejerciten **reglas de negocio** (dominio) de forma **aislada**.
-- Aplicar TDD: **primero la prueba**, luego la implementación mínima, y **refactor** continuo.
-- Mantener **dependencias hacia adentro**: el dominio **no** conoce bases de datos, HTTP ni librerías externas.
+
+- Diseñar pruebas unitarias que ejerciten **reglas de negocio** (dominio) de forma **aislada**.  
+- Aplicar TDD: **primero la prueba**, luego la implementación mínima, y **refactor** continuo.  
+- Mantener **dependencias hacia adentro**: el dominio **no** conoce bases de datos, HTTP ni librerías externas.  
+- Escribir pruebas siguiendo el patrón **AAA (Arrange – Act – Assert)** para mejorar legibilidad y mantenibilidad.  
+- Definir **clases de equivalencia y valores límite** que permitan cubrir escenarios válidos, inválidos y bordes con un número mínimo de pruebas.  
+- Expresar pruebas con **BDD (Given–When–Then)** para alinear el código con el lenguaje de negocio y asegurar trazabilidad entre requisitos y validación.
 
 ---
 
@@ -585,9 +589,9 @@ En este taller aplicamos distintas estrategias de **pruebas unitarias** que perm
 ## 🧩 Patrón AAA (Arrange – Act – Assert)
 
 - **Qué es:** forma de estructurar cada prueba en tres pasos:  
-  1. **Arrange:** preparar los datos y objetos necesarios.  
-  2. **Act:** ejecutar el método o acción bajo prueba.  
-  3. **Assert:** verificar que el resultado sea el esperado.  
+  - **Arrange:** preparar los datos y objetos necesarios.  
+  - **Act:** ejecutar el método o acción bajo prueba.  
+  - **Assert:** verificar que el resultado sea el esperado.  
 - **Para qué sirve:** hace que las pruebas sean más legibles, claras y fáciles de mantener, al separar explícitamente la preparación, la acción y la verificación.  
 
 ---
