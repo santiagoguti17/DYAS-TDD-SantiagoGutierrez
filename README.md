@@ -573,6 +573,216 @@ Crea un archivo `defectos.md` para documentar fallos:
 
 ---
 
+# 🔴🟢🔵 Historia TDD - Ciclo Red → Green → Refactor
+
+Documentamos las iteraciones del ciclo TDD implementado para este proyecto:
+
+## Iteración 1: Persona Válida (Camino Feliz)
+
+### 🔴 RED (Prueba que falla)
+```java
+@Test
+public void shouldRegisterValidPerson() {
+    Registry registry = new Registry();
+    Person person = new Person("Ana", 1, 30, Gender.FEMALE, true);
+    RegisterResult result = registry.registerVoter(person);
+    Assert.assertEquals(RegisterResult.VALID, result);
+}
+```
+
+### 🟢 GREEN (Implementación mínima)
+```java
+public RegisterResult registerVoter(Person p) {
+    if (p == null) return RegisterResult.INVALID;
+    if (p.getId() <= 0) return RegisterResult.INVALID;
+    return RegisterResult.VALID;
+}
+```
+
+### 🔵 REFACTOR (Mejoras sin romper pruebas)
+- Agregamos validación de edad básica
+- Extraemos constantes: `MIN_VALID_AGE = 18`, `MAX_VALID_AGE = 120`
+
+---
+
+## Iteración 2: Persona Muerta
+
+### 🔴 RED
+```java
+@Test
+public void shouldRejectDeadPerson() {
+    Registry registry = new Registry();
+    Person dead = new Person("Carlos", 2, 40, Gender.MALE, false);
+    RegisterResult result = registry.registerVoter(dead);
+    Assert.assertEquals(RegisterResult.DEAD, result);
+}
+```
+
+### 🟢 GREEN
+```java
+if (!p.isAlive()) {
+    return RegisterResult.DEAD;
+}
+```
+
+### 🔵 REFACTOR
+- Reordenamos el orden de validaciones (muerto antes que menor)
+- Mejoramos comentarios
+
+---
+
+## Iteración 3: Menores de Edad
+
+### 🔴 RED
+```java
+@Test
+public void shouldRejectUnderageAt17() {
+    Registry registry = new Registry();
+    Person person = new Person("Adolescente", 7, 17, Gender.FEMALE, true);
+    RegisterResult result = registry.registerVoter(person);
+    Assert.assertEquals(RegisterResult.UNDERAGE, result);
+}
+```
+
+### 🟢 GREEN
+```java
+if (p.getAge() < MIN_VALID_AGE) {
+    return RegisterResult.UNDERAGE;
+}
+```
+
+### 🔵 REFACTOR
+- Verificamos que se valide edad negativa como `INVALID_AGE` antes de `UNDERAGE`
+- Descubrimos y corregimos defecto: edad 0 retornaba `UNDERAGE` en lugar de `INVALID_AGE`
+
+---
+
+## Iteración 4: Validación de ID Inválido
+
+### 🔴 RED
+```java
+@Test
+public void shouldRejectWhenIdIsZero() {
+    Registry registry = new Registry();
+    Person person = new Person("Carlos", 0, 25, Gender.MALE, true);
+    RegisterResult result = registry.registerVoter(person);
+    Assert.assertEquals(RegisterResult.INVALID, result);
+}
+```
+
+### 🟢 GREEN
+```java
+if (p.getId() < MIN_VALID_ID) {
+    return RegisterResult.INVALID;
+}
+```
+
+### 🔵 REFACTOR
+- La validación ya estaba, solo necesitaba refinar constantes
+
+---
+
+## Iteración 5: Validación de Edad Inválida
+
+### 🔴 RED
+```java
+@Test
+public void shouldRejectInvalidAgeNegative() {
+    Registry registry = new Registry();
+    Person person = new Person("Bebé", 4, -1, Gender.MALE, true);
+    RegisterResult result = registry.registerVoter(person);
+    Assert.assertEquals(RegisterResult.INVALID_AGE, result);
+}
+
+@Test
+public void shouldRejectInvalidAgeZero() {
+    Registry registry = new Registry();
+    Person person = new Person("RecienNacido", 6, 0, Gender.MALE, true);
+    RegisterResult result = registry.registerVoter(person);
+    Assert.assertEquals(RegisterResult.INVALID_AGE, result);
+}
+```
+
+### 🟢 GREEN
+```java
+if (p.getAge() <= 0 || p.getAge() > MAX_VALID_AGE) {
+    return RegisterResult.INVALID_AGE;
+}
+```
+
+### 🔵 REFACTOR (Defecto corregido)
+- **Defecto encontrado**: Edad 0 retornaba `UNDERAGE` cuando debería retornar `INVALID_AGE`
+- **Causa**: La validación de edad negativa era `< 0` en lugar de `<= 0`
+- **Solución**: Cambiar a `<= 0` para incluir cero como inválido
+- Desplazamos esta validación ANTES de la validación de `UNDERAGE`
+
+---
+
+## Iteración 6: Duplicados
+
+### 🔴 RED
+```java
+@Test
+public void shouldRejectDuplicateRegistration() {
+    Registry registry = new Registry();
+    Person person1 = new Person("Pedro", 100, 30, Gender.MALE, true);
+    Person person2 = new Person("Pablo", 100, 35, Gender.MALE, true);
+    
+    RegisterResult result1 = registry.registerVoter(person1);
+    RegisterResult result2 = registry.registerVoter(person2);
+    
+    Assert.assertEquals(RegisterResult.VALID, result1);
+    Assert.assertEquals(RegisterResult.DUPLICATED, result2);
+}
+```
+
+### 🟢 GREEN
+```java
+if (registeredIds.contains(p.getId())) {
+    return RegisterResult.DUPLICATED;
+}
+registeredIds.add(p.getId());
+```
+
+### 🔵 REFACTOR
+- Usamos `HashSet<Integer>` para tracking eficiente (O(1))
+- Validación de duplicados es la última (después de todas las validaciones)
+
+---
+
+## Resumen de Ciclos
+
+| Ciclo | Característica Probada | RED ✗ | GREEN ✓ | REFACTOR 🔵 |
+|-------|------------------------|-------|---------|------------|
+| 1 | Persona válida (camino feliz) | Prueba creada | Impl. mínima | Constantes |
+| 2 | Persona muerta | Prueba creada | Validación alive | Reorden de checks |
+| 3 | Menores de edad | Prueba creada | Validación edad < 18 | **Defecto corregido** |
+| 4 | ID inválido | Prueba creada | Validación ID | Constantes MIN_ID |
+| 5 | Edad inválida (incl. 0) | 2 pruebas | Validación <= 0 | Corregido orden |
+| 6 | Duplicados | Prueba creada | HashSet + validación | Optimizado (O(1)) |
+
+---
+
+## Defectos Encontrados
+
+### 🐛 Defecto 01: Edad 0 retorna UNDERAGE en lugar de INVALID_AGE
+- **Encontrado en**: Iteración 3/5
+- **Causa**: Condición `age < 0` no incluía `0`
+- **Solución**: Cambiar a `age <= 0`
+- **Estado**: ✅ RESUELTO
+
+---
+
+## Cobertura de Pruebas
+
+- **Total de pruebas**: 15
+- **Todas las pruebas**: ✅ PASAN
+- **Cobertura de línea**: ~100% en Registry.java
+- **Clases de equivalencia cubiertas**: 10+
+- **Valores límite**: 8+
+
+---
+
 # Resumen del Taller de TDD
 
 En este taller aplicamos distintas estrategias de **pruebas unitarias** que permiten desarrollar software más confiable, claro y alineado con las reglas de negocio.  

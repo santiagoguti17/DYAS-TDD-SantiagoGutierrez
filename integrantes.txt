@@ -1,0 +1,37 @@
+INTEGRANTES DEL PROYECTO
+========================
+
+Proyecto: DYAS-TDD-SantiagoGutierrez
+Taller: Diseño y Arquitectura de Software - TDD (Test-Driven Development)
+
+Integrantes:
+- Santiago Gutierrez
+
+Semestre: 6
+Año: 2025
+
+Instrucciones para ejecutar las pruebas:
+========================================
+
+1. Clonar o descargar el repositorio:
+   git clone https://github.com/santiagoguti17/DYAS-TDD-SantiagoGutierrez.git
+
+2. Navegar al directorio del proyecto:
+   cd DYAS-TDD-SantiagoGutierrez
+
+3. Compilar el proyecto:
+   mvn clean compile
+
+4. Ejecutar las pruebas unitarias:
+   mvn clean test
+
+5. Generar reporte de cobertura JaCoCo:
+   mvn jacoco:report
+
+6. Abrir el reporte de cobertura:
+   Abrir archivo: target/site/jacoco/index.html en un navegador web
+
+Documentación adicional:
+- MATRIZ_PRUEBAS.md: Detalle de clases de equivalencia y valores límite
+- defectos.md: Registro de defectos encontrados durante las pruebas
+- README.md: Guía completa del proyecto y ciclo TDD utilizado
